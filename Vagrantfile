@@ -10,7 +10,6 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  Dir.mkdir 'src' unless Dir.exists?('src')
   config.vm.synced_folder "src/", "/usr/share/nginx/html", owner: "vagrant", group: "root"
 
   config.vm.provision :shell, :path => "provision.sh"
