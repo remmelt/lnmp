@@ -1,10 +1,11 @@
 #! /usr/bin/env bash
 
-sudo aptitude update
-sudo aptitude safe-upgrade -y
-sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password root'
-sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
-sudo aptitude install -y nginx mysql-server php5-mysql php5-common php5-cli php5-fpm git unzip htop zsh
+umount /usr/share/nginx/html
+aptitude update
+aptitude safe-upgrade -y
+debconf-set-selections <<< 'mysql-server mysql-server/root_password password root'
+debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
+aptitude install -y nginx mysql-server php5-mysql php5-common php5-cli php5-fpm git unzip htop zsh
 
 cat << EOF > /etc/nginx/sites-enabled/default
 # You may add here your
@@ -121,5 +122,6 @@ server {
 #}
 EOF
 
+mount -t vboxsf -o uid=1000,gid=1000 /usr/share/nginx/html /usr/share/nginx/html
 service php5-fpm restart
 service nginx restart
